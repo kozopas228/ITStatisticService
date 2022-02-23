@@ -6,6 +6,8 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using ITStatisticService.Logic.Domain;
 using ITStatisticService.Logic.Implementation.DjinniCO;
+using ITStatisticService.Logic.Implementation.RabotaUA;
+using ITStatisticService.Logic.Implementation.WorkUA;
 using Newtonsoft.Json.Converters;
 
 namespace ITStatisticService.Logic.Services
@@ -16,12 +18,11 @@ namespace ITStatisticService.Logic.Services
 
         private readonly List<IParser> _parsers;
 
-        public StatisticService(IDjinniCoParser djinniCoParser, ILoggingService loggingService)
+        public StatisticService(IDjinniCoParser djinniCoParser, IRabotaUaParser rabotaUaParser, IWorkUaParser workUaParser, ILoggingService loggingService)
         {
             _loggingService = loggingService;
 
-            _parsers = new List<IParser>();
-            _parsers.Add(djinniCoParser);
+            _parsers = new List<IParser> {djinniCoParser, workUaParser};
         }
 
         public async Task<double> GetAverageSalaryByTechnology(Technologies technology)

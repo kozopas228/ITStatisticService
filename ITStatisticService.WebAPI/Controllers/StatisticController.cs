@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ITStatisticService.Logic.Domain;
+using ITStatisticService.Logic.Implementation.RabotaUA;
+using ITStatisticService.Logic.Implementation.WorkUA;
 using ITStatisticService.Logic.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,10 +15,12 @@ namespace ITStatisticService.WebAPI.Controllers
     public class StatisticController : ControllerBase
     {
         private readonly StatisticService _service;
+        private readonly IWorkUaParser _workUaParser;
 
-        public StatisticController(StatisticService service)
+        public StatisticController(StatisticService service, IWorkUaParser workUaParser)
         {
             _service = service;
+            _workUaParser = workUaParser;
         }
 
         [HttpGet("GetAverageSalaryByTechnology")]
@@ -38,6 +42,12 @@ namespace ITStatisticService.WebAPI.Controllers
         {
             var salary = await _service.GetLowestAverageSalary();
             return new JsonResult(salary);
+        }
+
+        [HttpOptions]
+        public async Task<IActionResult> Test()
+        {
+            return new JsonResult(await _workUaParser.Parse(Technologies.Java));
         }
     }
 }

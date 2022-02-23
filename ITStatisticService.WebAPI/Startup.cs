@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using ITStatisticService.Data;
 using ITStatisticService.Logic.Implementation.DjinniCO;
+using ITStatisticService.Logic.Implementation.RabotaUA;
+using ITStatisticService.Logic.Implementation.WorkUA;
 using ITStatisticService.Logic.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -44,7 +46,22 @@ namespace ITStatisticService.WebAPI
                 BaseUrl = Configuration.GetSection("DjinniCO").GetSection("baseUrl").Value,
                 CertainUrl = Configuration.GetSection("DjinniCO").GetSection("certainUrl").Value,
             });
+            services.AddTransient<IRabotaUaParserSettings>(x => new RabotaUaParserSettings
+            {
+                PagesAmount = Int32.Parse(Configuration.GetSection("PagesAmount").Value),
+                BaseUrl = Configuration.GetSection("RabotaUA").GetSection("baseUrl").Value,
+                CertainUrl = Configuration.GetSection("RabotaUA").GetSection("certainUrl").Value,
+            });
+            services.AddTransient<IWorkUaParserSettings>(x => new WorkUaParserSettings
+            {
+                PagesAmount = Int32.Parse(Configuration.GetSection("PagesAmount").Value),
+                BaseUrl = Configuration.GetSection("WorkUA").GetSection("baseUrl").Value,
+                CertainUrl = Configuration.GetSection("WorkUA").GetSection("certainUrl").Value,
+            });
+            
             services.AddTransient<IDjinniCoParser, DjinniCoParser>();
+            services.AddTransient<IRabotaUaParser, RabotaUaParser>();
+            services.AddTransient<IWorkUaParser, WorkUaParser>();
             
             services.AddTransient<StatisticService>();
             services.AddTransient<ILoggingService, LoggingService>();

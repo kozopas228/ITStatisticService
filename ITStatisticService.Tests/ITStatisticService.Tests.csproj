@@ -21,10 +21,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="IntegrationTests" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\ITStatisticService.Logic\ITStatisticService.Logic.csproj" />
     </ItemGroup>
 
