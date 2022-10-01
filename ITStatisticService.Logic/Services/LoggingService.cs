@@ -21,6 +21,7 @@ namespace ITStatisticService.Logic.Services
                 Technology = result.Technology,
                 Salary = result.Salary,
                 Date = DateTime.Now
+                Number = DateTime.Yesterday
 
             };
             await _context.Results.AddAsync(loggingResult);
